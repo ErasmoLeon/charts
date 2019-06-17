@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spark.fullname" . }}-config
+  labels:
+    app.kubernetes.io/name: {{ include "spark.name" . }}
+    helm.sh/chart: {{ include "spark.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: configmap
+data:
+  spark-env.sh: |-
+    {{- if .Values.master.host }}
+    SPARK_MASTER_HOST=${SPARK_MASTER_HOST}
+    {{- end }}
+    {{- if .Values.master.clusterPort }}
+    SPARK_MASTER_PORT=${SPARK_MASTER_OPTS}
+    {{- end }}
+    SPARK_MASTER_OPTS=${SPARK_MASTER_OPTS}
+    {{- if .Values.worker.coreLimit }}
+    SPARK_WORKER_CORES=${SPARK_WORKER_CORES}
+    {{- end }}
+    {{- if .Values.worker.memoryLimit }}
+    SPARK_WORKER_MEMORY=${SPARK_WORKER_MEMORY}
+    {{- end }}
+    {{- if .Values.worker.clusterPort }}
+    SPARK_WORKER_PORT=${SPARK_WORKER_PORT}
+    {{- end }}
+    {{- if .Values.worker.dir }}
+    SPARK_WORKER_DIR=${SPARK_WORKER_DIR}
+    {{- end }}
+    SPARK_WORKER_OPTS=${SPARK_WORKER_OPTS}
+    SPARK_DAEMON_MEMORY=${SPARK_DAEMON_MEMORY}
+    SPARK_HISTORY_OPTS=${SPARK_HISTORY_OPTS}
+    SPARK_SHUFFLE_OPTS=${SPARK_SHUFFLE_OPTS}
+    SPARK_DAEMON_JAVA_OPTS=${SPARK_DAEMON_JAVA_OPTS}
+    SPARK_DAEMON_CLASSPATH=${SPARK_DAEMON_CLASSPATH}
+    SPARK_PUBLIC_DNS=${SPARK_PUBLIC_DNS}
